@@ -1,37 +1,38 @@
-import './styles/App.css';
-import logoReact from './logo.svg';
-import logoWordpress from './logo-wordpress.svg';
-import StaticPage from './pages/StaticPage';
+import 'bootstrap/dist/css/bootstrap.css';
+import './styles/index.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import StaticPage from './pages/StaticPage';
+import { get } from './services/menuService';
+import { findBySlug } from './services/pageService';
 
 function App() {
     const [page, setPage] = useState([]);
+    const [menu, setMenu] = useState([]);
+    const location = window.location.pathname;
 
     useEffect(() => {
-        async function loadPage() {
-            const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8001';
-            const response = await fetch(baseUrl + '/wp-json/wp/v2/pages/2');
-            if (!response.ok) {
-                return;
-            }
-
-            const page = await response.json();
+        async function getData() {
+            const page = await findBySlug(location);
             setPage(page);
+
+            const menu = await get();
+            setMenu(menu);
         }
 
-        loadPage();
-    }, []);
+        getData();
+    }, [location]);
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <span>
-                    <img src={logoReact} className="App-logo" alt="logo react"/>
-                    <img src={logoWordpress} className="App-logo" alt="logo wordpress"/>
-                </span>
-                <StaticPage page={ page } />
-            </header>
-        </div>
+        <Router>
+            <Header menu={ menu } />
+            <Routes>
+                <Route path={ location } element={ <StaticPage page={page} /> } />
+            </Routes>
+            <Footer />
+        </Router>
     );
 }
 
