@@ -1,12 +1,16 @@
 import React from 'react';
 import logoReact from '../logo.svg';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 
 /**
+ * @param {Object} props
+ * @param {Array<{id:integer, title:string, slug:string, active:bool, content:string}>} props.menu=[]
+ * @param {function(string)} props.setLocation
+ * @param props.setLocation Function
  * @returns {JSX.Element}
- * @constructor
  */
-export default function Header({ menu }) {
+export default function Header({ menu, setLocation }) {
     return (
         <div className="border-bottom">
             <header className="container d-flex align-items-center justify-content-between py-3">
@@ -19,12 +23,13 @@ export default function Header({ menu }) {
                             {
                                 menu.map(({ id, title, slug, active }) =>
                                     <li key={id} className="nav-item">
-                                        <a
-                                            href={`/${slug}/`}
+                                        <Link
+                                            onClick={ () => setLocation(`/${slug}/`) }
+                                            to={`/${slug}/`}
                                             className={classNames('nav-link', { 'active': active })}
                                         >
                                             {title}
-                                        </a>
+                                        </Link>
                                     </li>
                                 )
                             }

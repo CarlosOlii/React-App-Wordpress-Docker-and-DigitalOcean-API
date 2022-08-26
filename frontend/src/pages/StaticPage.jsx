@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
 
 /**
- * @param string title
- * @param string content
+ * @param {Object} props
+ * @param {Array<{title:string, content:string}>} props.page=[]
  * @returns {JSX.Element}
- * @constructor
  */
 export default function StaticPage({ page: { title, content } = {} }) {
     return (
@@ -14,7 +13,7 @@ export default function StaticPage({ page: { title, content } = {} }) {
                     title && content ? (
                         <Fragment>
                             <h1>{title.rendered}</h1>
-                            <div dangerouslySetInnerHTML={{__html: content.rendered}}></div>
+                            <div dangerouslySetInnerHTML={{__html: content.rendered}} />
                         </Fragment>
                     ) : (
                         <div className="loading">Loading...</div>

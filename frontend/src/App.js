@@ -7,29 +7,36 @@ import Footer from './components/Footer';
 import StaticPage from './pages/StaticPage';
 import { get } from './services/menuService';
 import { findBySlug } from './services/pageService';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
     const [page, setPage] = useState([]);
     const [menu, setMenu] = useState([]);
-    const location = window.location.pathname;
+    const [location, setLocation] = useState(window.location.pathname);
 
     useEffect(() => {
-        async function getData() {
+        async function getPage() {
             const page = await findBySlug(location);
             setPage(page);
+        }
 
+        async function getMenu() {
             const menu = await get();
             setMenu(menu);
         }
 
-        getData();
+        getMenu();
+        getPage();
     }, [location]);
 
     return (
         <Router>
-            <Header menu={ menu } />
+            <Header menu={menu} setLocation={setLocation} />
             <Routes>
-                <Route path={ location } element={ <StaticPage page={page} /> } />
+                { page && (
+                    <Route path={location} element={<StaticPage page={page} />} />
+                )}
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
             <Footer />
         </Router>

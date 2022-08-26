@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 
 /**
  * @returns {JSX.Element}
- * @constructor
  */
 export default function NotFoundPage() {
     return (
