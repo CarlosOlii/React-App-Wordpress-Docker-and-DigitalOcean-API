@@ -1,37 +1,45 @@
-import './styles/App.css';
-import logoReact from './logo.svg';
-import logoWordpress from './logo-wordpress.svg';
-import StaticPage from './pages/StaticPage';
+import 'bootstrap/dist/css/bootstrap.css';
+import './styles/index.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import StaticPage from './pages/StaticPage';
+import { get } from './services/menuService';
+import { findBySlug } from './services/pageService';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
     const [page, setPage] = useState([]);
+    const [menu, setMenu] = useState([]);
+    const [location, setLocation] = useState(window.location.pathname);
 
     useEffect(() => {
-        async function loadPage() {
-            const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8001';
-            const response = await fetch(baseUrl + '/wp-json/wp/v2/pages/2');
-            if (!response.ok) {
-                return;
-            }
-
-            const page = await response.json();
+        async function getPage() {
+            const page = await findBySlug(location);
             setPage(page);
         }
 
-        loadPage();
-    }, []);
+        async function getMenu() {
+            const menu = await get();
+            setMenu(menu);
+        }
+
+        getMenu();
+        getPage();
+    }, [location]);
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <span>
-                    <img src={logoReact} className="App-logo" alt="logo react"/>
-                    <img src={logoWordpress} className="App-logo" alt="logo wordpress"/>
-                </span>
-                <StaticPage page={ page } />
-            </header>
-        </div>
+        <Router>
+            <Header menu={menu} setLocation={setLocation} />
+            <Routes>
+                { page && (
+                    <Route path={location} element={<StaticPage page={page} />} />
+                )}
+                <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+            <Footer />
+        </Router>
     );
 }
 
