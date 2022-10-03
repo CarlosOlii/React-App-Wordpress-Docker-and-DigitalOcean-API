@@ -1,32 +1,65 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import logoReact from '../logo.svg';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import { get } from "../services/menuService";
 
 /**
  * @param {Object} props
- * @param {Array<{id:integer, title:string, slug:string, active:bool, content:string}>} props.menu=[]
  * @param {function(string)} props.setLocation
- * @param props.setLocation Function
  * @returns {JSX.Element}
  */
-export default function Header({ menu, setLocation }) {
+export default function Header({ setLocation }) {
+    const [menu, setMenu] = useState([]);
+    const [menuToggle, setMenuToggle] = useState(false);
+
+    useEffect(() => {
+        async function getMenu() {
+            const menu = await get();
+            setMenu(menu);
+        }
+
+        getMenu();
+    }, []);
+
+    const handleMenuToggle = () => {
+        setMenuToggle(!menuToggle);
+    }
+
+    const handleSetMenu = (slug) => {
+        handleMenuToggle();
+        setLocation(`/${slug}/`);
+
+        menu.map((item) => {
+            item.active = item.slug === slug;
+
+            return item;
+        });
+    }
+
     return (
-        <div className="border-bottom">
-            <header className="container d-flex align-items-center justify-content-between py-3">
-                <a href="/" className="text-decoration-none">
-                    <img src={logoReact} alt="logo React" height="60"/>
-                </a>
-                {
-                    menu.length > 0 && (
-                        <ul className="nav nav-pills">
+        <header>
+            <Link to="/" onClick={() => handleSetMenu('/')} className="text-decoration-none">
+                <img src={logoReact} alt="logo react" className="logo" height="60" />
+            </Link>
+            <button
+                onClick={handleMenuToggle}
+                className={classNames('nav-toggle', { 'nav-open': menuToggle })}
+                aria-label="toggle navigation"
+            >
+                <span className="hamburger"></span>
+            </button>
+            {
+                menu.length > 0 && (
+                    <nav className="nav">
+                        <ul className="nav__list">
                             {
                                 menu.map(({ id, title, slug, active }) =>
-                                    <li key={id} className="nav-item">
+                                    <li key={id} className="nav__item">
                                         <Link
-                                            onClick={ () => setLocation(`/${slug}/`) }
+                                            onClick={() => handleSetMenu(slug)}
                                             to={`/${slug}/`}
-                                            className={classNames('nav-link', { 'active': active })}
+                                            className={classNames('nav__link', { 'nav__link--active': active })}
                                         >
                                             {title}
                                         </Link>
@@ -34,9 +67,9 @@ export default function Header({ menu, setLocation }) {
                                 )
                             }
                         </ul>
-                    )
-                }
-            </header>
-        </div>
+                    </nav>
+                )
+            }
+        </header>
     );
 }

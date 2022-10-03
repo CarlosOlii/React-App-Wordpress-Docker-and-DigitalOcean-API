@@ -1,0 +1,21 @@
+.footer {
+    background: #111;
+    color: var(--clr-green);
+    text-align: center;
+    padding: 2.5em 0;
+    font-size: var(--fs-h3);
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    &__link {
+        font-weight: var(--fw-bold);
+
+        &:hover {
+            opacity: .7;
+            text-decoration: underline;
+        }
+    }
+}

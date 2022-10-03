@@ -8,18 +8,17 @@ import React, { Fragment } from 'react';
 export default function StaticPage({ page: { title, content } = {} }) {
     return (
         <Fragment>
-            <main className="container py-3">
-                {
-                    title && content ? (
-                        <Fragment>
-                            <h1>{title.rendered}</h1>
-                            <div dangerouslySetInnerHTML={{__html: content.rendered}} />
-                        </Fragment>
-                    ) : (
-                        <div className="loading">Loading...</div>
-                    )
-                }
-            </main>
+            {
+                title && content ? (
+                    <Fragment>
+                        {/*<h1 className="section__title section__title--intro">{title.rendered}</h1>*/}
+                        {/*<p className="section__subtitle section__subtitle--intro">{title.rendered}</p>*/}
+                        <main dangerouslySetInnerHTML={{__html: content.rendered}} />
+                    </Fragment>
+                ) : (
+                    <main className="loading">Loading...</main>
+                )
+            }
         </Fragment>
     );
 }

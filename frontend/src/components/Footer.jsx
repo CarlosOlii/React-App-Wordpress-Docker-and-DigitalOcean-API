@@ -5,14 +5,30 @@ import React from 'react';
  */
 export default function Footer() {
     return (
-        <footer className="blog-footer">
-            <p>
-                <span>Blog template built with: </span>
-                <a href="https://reactjs.org/">React</a>,&nbsp;
-                <a href="https://getbootstrap.com/">Bootstrap</a>,&nbsp;
-                <a href="https://wordpress.com/">Wordpress</a>&nbsp;by&nbsp;
-                <a href="https://github.com/CarlosOlii/">Carlos Oliveira</a>.
-            </p>
+        <footer className="footer">
+            <a href="mailto:geral@mypointi.com" className="footer__link">geral@mypointi.com</a>
+            <ul className="social-list">
+                <li className="social-list__item">
+                    <a className="social-list__link" href="https://codepen.io">
+                        <i className="fab fa-codepen"></i>
+                    </a>
+                </li>
+                <li className="social-list__item">
+                    <a className="social-list__link" href="http://dribbble.com">
+                        <i className="fab fa-dribbble"></i>
+                    </a>
+                </li>
+                <li className="social-list__item">
+                    <a className="social-list__link" href="https://twitter.com">
+                        <i className="fab fa-twitter"></i>
+                    </a>
+                </li>
+                <li className="social-list__item">
+                    <a className="social-list__link" href="https://github.com/CarlosOlii/">
+                        <i className="fab fa-github"></i>
+                    </a>
+                </li>
+            </ul>
         </footer>
     );
 }
