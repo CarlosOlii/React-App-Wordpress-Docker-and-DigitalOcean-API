@@ -6,7 +6,7 @@ export async function get() {
         return;
     }
 
-    let menu = await response.json();
+    const menu = await response.json();
     return menu.items.map(({ID, title, url, slug}) => {
         return {
             id: ID,
