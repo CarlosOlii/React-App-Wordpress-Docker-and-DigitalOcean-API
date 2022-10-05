@@ -1,10 +1,8 @@
-import axios from 'axios';
+import httpService from './httpService';
 
-const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8001';
-
-export default class MenuService {
+class MenuService {
     async get() {
-        const result = await axios.get(`${baseUrl}/wp-json/menus/v1/menus/menu/`);
+        const result = await httpService.get('/wp-json/menus/v1/menus/menu/');
 
         return result.data.items.map(({ID, title, url, slug}) => {
             return {
@@ -18,3 +16,4 @@ export default class MenuService {
     }
 }
 
+export default new MenuService();

@@ -15,7 +15,7 @@ export default function Header({ setLocation }) {
 
     useEffect(() => {
         async function getMenu() {
-            const menu = await new MenuService().get();
+            const menu = await MenuService.get();
             setMenu(menu);
         }
 

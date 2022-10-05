@@ -12,7 +12,7 @@ function App() {
 
     useEffect(() => {
         async function getPage() {
-            const page = await new PageService().findBySlug(location);
+            const page = await PageService.findBySlug(location);
             setPage(page);
         }
 
