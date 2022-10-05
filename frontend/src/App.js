@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import StaticPage from './pages/StaticPage';
-import { findBySlug } from './services/pageService';
 import NotFoundPage from './pages/NotFoundPage';
+import PageService from './services/pageService';
 
 function App() {
     const [page, setPage] = useState([]);
@@ -12,9 +12,10 @@ function App() {
 
     useEffect(() => {
         async function getPage() {
-            const page = await findBySlug(location);
+            const page = await new PageService().findBySlug(location);
             setPage(page);
         }
+
         getPage();
     }, [location]);
 

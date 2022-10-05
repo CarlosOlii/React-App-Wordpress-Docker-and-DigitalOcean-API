@@ -1,25 +1,16 @@
+import axios from 'axios';
+
 const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8001';
 
-export async function getAll() {
-    const response = await fetch(`${baseUrl}/wp-json/wp/v2/pages/`);
-    if (!response.ok) {
-        return;
-    }
+export default class PageService {
+    async findBySlug(slug) {
+        if (slug === '/') {
+            slug = 'homepage';
+        }
 
-    return await response.json();
+        const result = await axios.get(`${baseUrl}/wp-json/wp/v2/pages?slug=${slug}`);
+        const [data] = result.data;
+
+        return data;
+    }
 }
-
-export async function findBySlug(slug) {
-    if (slug === '/') {
-        slug = 'homepage';
-    }
-
-    const response = await fetch(`${baseUrl}/wp-json/wp/v2/pages?slug=${slug}`);
-    if (!response.ok) {
-        return;
-    }
-
-    const page = await response.json();
-    return page[0];
-}
-

@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import logoReact from '../logo.svg';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import { get } from "../services/menuService";
+import MenuService from '../services/menuService';
 
 /**
  * @param {Object} props
@@ -15,7 +15,7 @@ export default function Header({ setLocation }) {
 
     useEffect(() => {
         async function getMenu() {
-            const menu = await get();
+            const menu = await new MenuService().get();
             setMenu(menu);
         }
 
